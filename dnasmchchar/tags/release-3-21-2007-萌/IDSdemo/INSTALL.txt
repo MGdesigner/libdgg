@@ -1,0 +1,16 @@
+2/27/2007
+==如何編譯==
+請使用ant（http://ant.apache.org/）
+* ant compile 編譯，編譯結果會放在bin目錄下
+==產出包裝目錄==
+* ant dist 打包好jar檔，且把相關的文件、字形檔一起放在dist中
+==打包==
+=== 執行檔===
+* ant Main Build（只打ant時的預設值），從zip產出整個zip包裝檔於專目錄
+
+===源碼 ===
+* ant srcpkg
+==執行==
+* ant run 
+==清理==
+* ant clean　，清理bin、dist目錄
