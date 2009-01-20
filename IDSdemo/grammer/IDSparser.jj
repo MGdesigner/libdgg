@@ -1,0 +1,78 @@
+/**
+* written by MGdesigner
+* 這是簡單的IDS正確性驗證程式
+* 請用javacc編譯
+* license GPL
+*/
+options {
+  LOOKAHEAD = 1;
+  CHOICE_AMBIGUITY_CHECK = 2;
+  OTHER_AMBIGUITY_CHECK = 1;
+  STATIC = true;
+  DEBUG_PARSER = false;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = true;
+  UNICODE_INPUT = true;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = false;
+}
+
+PARSER_BEGIN(IDSparser)
+
+public class IDSparser {
+
+  public static void main(String args[]) throws ParseException {
+    IDSparser parser = new IDSparser(System.in);
+    parser.Input();
+  }
+
+}
+
+PARSER_END(IDSparser)
+
+
+
+TOKEN :
+{
+  <二元組符: ["\u2ff0","\u2ff1","\u2ff4"-"\u2ffb"]>
+|  <三元組符: ["\u2ff2","\u2ff3"]>
+| <部件: ["\u0000"-"\u2fef","\u3000"-"\uffff"] >
+
+ 
+}
+
+void Input() :
+{  }
+{
+  MatchedBraces() 
+  { System.out.println("這是一個合法的IDS"); }
+}
+
+void MatchedBraces() :
+{ }
+{
+Binaryasm()
+|Triniasm()
+|<部件>
+
+}
+void Binaryasm() :
+{}
+{
+<二元組符> [ MatchedBraces()] [ MatchedBraces()]
+{ System.out.println("二元組合"); }
+}
+
+void Triniasm() :
+{}
+{
+<三元組符> [MatchedBraces()] [ MatchedBraces()][ MatchedBraces()]
+{ System.out.println("三元組合"); }
+}
