@@ -1,0 +1,104 @@
+/*
+*
+* Copyright (c) 2007 著作權由張正一所有。著作權人保留一切權利。
+*
+* 這份授權條款，在使用者符合以下三條件的情形下，授予使用者使用及再散播本
+* 軟體包裝原始碼及二進位可執行形式的權利，無論此包裝是否經改作皆然：
+* 
+* * 對於本軟體原始碼的再散播，必須保留上述的版權宣告、此三條件表列，以
+*   及下述的免責聲明。
+* * 對於本套件二進位可執行形式的再散播，必須連帶以文件以及／或者其他附
+*   於散播包裝中的媒介方式，重製上述之版權宣告、此三條件表列，以及下述
+*   的免責聲明。
+* * 未獲事前取得書面許可，不得使用張正一或本軟體貢獻者之名稱，
+*   來為本軟體之衍生物做任何表示支持、認可或推廣、促銷之行為。
+* 
+* 免責聲明：本軟體是由張正一及本軟體之貢獻者以現狀（\as is\）提供，
+* 本軟體包裝不負任何明示或默示之擔保責任，包括但不限於就適售性以及特定目
+* 的的適用性為默示性擔保。張正一及本軟體之貢獻者，無論任何條件、
+* 無論成因或任何責任主義、無論此責任為因合約關係、無過失責任主義或因非違
+* 約之侵權（包括過失或其他原因等）而起，對於任何因使用本軟體包裝所產生的
+* 任何直接性、間接性、偶發性、特殊性、懲罰性或任何結果的損害（包括但不限
+* 於替代商品或勞務之購用、使用損失、資料損失、利益損失、業務中斷等等），
+* 不負任何責任，即在該種使用已獲事前告知可能會造成此類損害的情形下亦然。
+ */
+
+/**
+* written by MGdesigner(shoichi.chou@gmail.com)
+* 這是簡單的IDS正確性驗證程式
+*目前功能只在於檢驗合不合法
+* 請用javacc編譯
+* 
+*/
+options {
+  LOOKAHEAD = 1;
+  CHOICE_AMBIGUITY_CHECK = 2;
+  OTHER_AMBIGUITY_CHECK = 1;
+  STATIC = true;
+  DEBUG_PARSER = false;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = true;
+  UNICODE_INPUT = true;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = false;
+}
+
+PARSER_BEGIN(IDSverifier)
+
+public class IDSverifier {
+
+  public static void main(String args[]) throws ParseException {
+    IDSverifier parser = new IDSverifier(System.in);
+    parser.Input();
+  }
+
+}
+
+PARSER_END(IDSverifier)
+
+
+
+TOKEN :
+{
+  <二元組符: ["\u2ff0","\u2ff1","\u2ff4"-"\u2ffb"]>
+|  <三元組符: ["\u2ff2","\u2ff3"]>
+| <部件: ["\u0000"-"\u2fef","\u3000"-"\uffff"] >
+
+ 
+}
+
+void Input() :
+{  }
+{
+  MatchedBraces() 
+  { System.out.println("這是一個合法的IDS"); }
+}
+
+void MatchedBraces() :
+{ }
+{
+Binaryasm()
+|Triniasm()
+|<部件>
+
+}
+void Binaryasm() :
+{}
+{
+<二元組符> [ MatchedBraces()] [ MatchedBraces()]
+{ System.out.println("二元組合"); }
+}
+
+void Triniasm() :
+{}
+{
+<三元組符> [MatchedBraces()] [ MatchedBraces()][ MatchedBraces()]
+{ System.out.println("三元組合"); }
+}

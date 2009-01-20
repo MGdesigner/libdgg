@@ -1,0 +1,130 @@
+<?xml version ="1.0" encoding="UTF-8" ?>
+<project name = "libdgg" default = "Main Build" basedir=".">
+	<property name="src" location="src"/>
+  <property name="bin" location="bin"/>
+  <property name="doc"  location="doc"/>
+	<property name="dist"  location="dist"/>
+	<property name="fonts"  location="fonts"/>
+
+
+	<target name="init">
+	    <!-- Create the time stamp -->
+	    <tstamp/>
+	    <!-- Create the build directory structure used by compile -->
+	    <mkdir dir="${bin}"/>
+		   <mkdir dir="${dist}"/>
+	</target>
+	
+	<target name="compile" depends="init"
+	        description="編譯原碼" >
+	    <!-- Compile the java code from ${src} into ${build} -->
+	    	<javac srcdir="${src}" destdir="${bin}" encoding="UTF-8" />
+	  </target>
+
+	<target name="java" depends="compile" description="方便編程測試用" >
+	<java classname="demo.Demo"
+	           fork="true"
+	           failonerror="true"
+	           maxmemory="128m"
+	           >
+	         <arg value="-h"/>
+	         <classpath>
+	           <pathelement location="bin/"/>
+	           <pathelement path="${java.class.path}"/>
+	         </classpath>
+	       </java>
+	</target>
+	
+	<target name="java4db" depends="compile" description="方便編程測試用" >		
+			<java classname="demo.Demo"
+			           fork="true"
+			           failonerror="true"
+			           maxmemory="128m"
+			           >
+				<jvmarg value="-Xdebug"/>
+			         <arg value="-h"/>
+			         <classpath>
+			           <pathelement location="bin/"/>
+			           <pathelement path="${java.class.path}"/>
+			         </classpath>
+			       </java>
+			</target>
+
+
+	  <target name="dist" depends="compile"
+	        description="產生包裝檔" >
+	    <!-- Create the distribution directory -->
+
+	    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+	  	<mkdir dir="${dist}/fonts"/>
+	  			<copy todir="${dist}/fonts">
+	  			    <fileset dir="fonts">
+	  			    </fileset>
+	  			  </copy>
+	  			<mkdir dir="${dist}/doc"/>
+	  					<copy todir="${dist}/doc">
+	  					    <fileset dir="doc">
+	  					    </fileset>
+	  					  </copy>
+	  			
+	  			<copy file="README.txt" tofile="${dist}/README.txt"/>	
+	  			<copy file="LICENSE.txt" tofile="${dist}/LICENSE.txt"/>	
+					<copy file="KSAFAEA.txt" tofile="${dist}/KSAFAEA.txt"/>	
+      	<copy file="IDSdemo.sh" tofile="${dist}/IDSdemo.sh"/>	
+					<chmod file="${dist}/IDSdemo.sh" perm="+x"/>
+	  	
+	    <jar destfile="${dist}/libdgg.jar" basedir="${bin}">
+
+	      <manifest>
+	        <attribute name="Built-By" value="${user.name}"/> 
+	        	<attribute name="Main-Class" value="demo.Demo"/> 
+	      	
+	        <section name="demo/Demo.class">
+	          <attribute name="Sealed" value="false"/>
+	        </section>
+	      </manifest>
+	    </jar>
+
+
+	  </target>
+
+	  <target name="clean" description="清理產物" >
+	    <!-- Delete the ${build} and ${dist} directory trees -->
+	    <delete dir="${bin}"/>
+	    <delete dir="${dist}"/>
+	  		<delete file="libdgg.zip"/>
+				<delete file="libdgg_src.zip"/>
+	
+	  </target>
+	
+	<target name="run" depends="dist" description="執行" >
+	<java jar="dist/libdgg.jar"
+	           fork="true"
+	           failonerror="true"
+	           maxmemory="128m"
+	           >
+	         <arg value="-h"/>
+	         <classpath>
+	           <pathelement location="dist/libdgg.jar"/>
+	           <pathelement path="${java.class.path}"/>
+	         </classpath>
+	       </java>
+	</target>
+	
+
+
+	
+	<target name = "Main Build" depends="dist">
+		<echo message = "Build binary package" />
+		<zip destfile="libdgg.zip"
+		       basedir="${dist}"
+		  />
+	</target>
+	
+	<target name = "srcpkg" depends="clean">
+			<echo message = "build src package" />	
+			<zip destfile="libdgg_src.zip"
+			       basedir="."
+			  />
+		</target>
+</project>
