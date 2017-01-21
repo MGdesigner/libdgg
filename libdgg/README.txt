@@ -1,14 +1,11 @@
 作者mgdesigner,聯絡方式：shoichi.chou@gmail.com
 作者的網誌是http://magicdesign.blogspot.com/
 
-本軟體的專案網址是http://rt.openfoundry.org/Foundry/Project/index.html?Queue=690
-
-本軟體相關最新的訊息，也會發佈在
-http://zhongwen.tw/
 
 本軟體授權書請看license.txt
 
 ==最近沿革==
+1/21/2017 更新本readme檔
 10/3 更新到「女萌生火-10-3」版，增加另存圖檔、變色、字型變換等功能，且修正IDSparser裡IDS組出的字面積超過256*256的錯誤
 3/29 把ant用的build.xml檔，裡面編譯的部份，加上encoding UTF-8，以讓預設編碼不是utf-8的系統也可以方便使用
 3/21  釋出1.0版
@@ -17,12 +14,8 @@ http://zhongwen.tw/
 ==系統需求==
 各種有java執行環境的作業系統，至少安裝JRE1.4以後的版本
 
-==如何執行==
-* Unix-like系統的話，請執行主目錄下的IDSdemo.sh
-* windows：直接雙按IDSDemo.jar
-*  Macintosh系統：雙按IDSDemo.jar
-
-
+==如何編譯與執行==
+* ant run 就會進行自動編譯與執行
 ==功能解說==
  使用方法：要組字，是在上面的輸入欄打入IDS字串，在打IDS字串時，有輔助的按鈕可拆字以及輸入特定組字符。
  
@@ -56,4 +49,4 @@ IDS字串是用先序（prefix組字），把游標移動到字前，按下要�
 Ａ：本軟體是個漢字字形的無限編碼產生器，是個參考實做，也是個示範
 
 Ｑ：字型可以作更好看嗎？
-Ａ：本軟體的研發重心不是字型的好看，而是動態組合時的比例自動調整演算法、IDS解譯、展示用途的改良、動態組字解說。字型本身的改良，請向剎那（www.ksana.tw）字型的維護團隊指教。
+Ａ：本軟體的研發重心不是字型的好看，而是動態組合時的比例自動調整演算法、IDS解譯、展示用途的改良、動態組字解說、漢字自然筆序hash等研究。更美觀的字型產出，請參考han3_ji7_tsoo1_kian3 專案。
